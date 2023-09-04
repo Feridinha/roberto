@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  seaweedfs:
+    container_name: seaweedfs
+    image: chrislusf/seaweedfs
+    restart: unless-stopped
+    command:
+      - server
+      - -dir=/data
+      - -volume.max=0
+      - -master.volumePreallocate=false
+      - -master.volumeSizeLimitMB=1024
+      - -s3
+      - -s3.config=/s3-config.json
+    ports:
+      - "127.0.0.1:28080:8080"
+      - "127.0.0.1:18080:18080"
+      - "0.0.0.0:8333:8333"
+    volumes:
+      - "/root/s3-config.json:/s3-config.json:ro"
+      - "/root/data:/data"
